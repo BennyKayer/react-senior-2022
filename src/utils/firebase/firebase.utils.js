@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAuth, signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
+import { getFirestore, doc, getDoc, setDoc } from "firebase/firestore";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -24,3 +25,18 @@ provider.setCustomParameters({
 
 export const auth = getAuth();
 export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+
+export const db = getFirestore();
+
+export const createUserDocumentFromAuth = async (userAuth) => {
+    // This stuff will get the reference, even if we don't have a users collection
+    // it will create a pointer bcs it's a unique space and I will hold it for future actions
+    const userDocRef = doc(db, "users", userAuth.uid);
+    console.log(userDocRef);
+
+    // This will transform the ref into snapshot
+    // it is now possible to determine whether document actually exists
+    const userSnapshot = await getDoc(userDocRef);
+    console.log(userSnapshot);
+    console.log(userSnapshot.exists());
+};
