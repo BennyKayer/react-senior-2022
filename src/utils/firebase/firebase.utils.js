@@ -37,6 +37,16 @@ export const createUserDocumentFromAuth = async (userAuth) => {
     // This will transform the ref into snapshot
     // it is now possible to determine whether document actually exists
     const userSnapshot = await getDoc(userDocRef);
-    console.log(userSnapshot);
-    console.log(userSnapshot.exists());
+
+    if (!userSnapshot.exists()) {
+        const { displayName, email } = userAuth;
+        const createdAt = new Date();
+
+        try {
+            await setDoc(userDocRef, { displayName, email, createdAt });
+        } catch (error) {
+            console.log("error creating the user", error.message);
+        }
+    }
+    return userDocRef;
 };
