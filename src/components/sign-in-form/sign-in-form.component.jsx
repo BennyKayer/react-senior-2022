@@ -31,10 +31,20 @@ const SignInForm = () => {
                 email,
                 password
             );
-            setFormFields(defaultFormFields);
             console.log(response);
+            setFormFields(defaultFormFields);
         } catch (err) {
-            console.error(err);
+            switch (err.code) {
+                case "auth/wrong-password":
+                    alert("incorrect password");
+                    break;
+                case "auth/user-not-found":
+                    alert("no user associated with this email");
+                    break;
+                default:
+                    console.error(err);
+                    break;
+            }
         }
     };
 
@@ -70,7 +80,11 @@ const SignInForm = () => {
                     <Button buttonType="default" type="submit">
                         Sign In
                     </Button>
-                    <Button onClick={signInWithGoogle} buttonType="google">
+                    <Button
+                        type="button"
+                        onClick={signInWithGoogle}
+                        buttonType="google"
+                    >
                         Google sign in
                     </Button>
                 </div>
