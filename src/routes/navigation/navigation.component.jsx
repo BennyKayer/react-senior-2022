@@ -4,8 +4,15 @@ import "./navigation.styles.scss";
 import { ReactComponent as CrwnLogo } from "../../assets/crown.svg";
 import { UserContext } from "../../contexts/user.context";
 
+import { signOutUser } from "../../utils/firebase/firebase.utils";
+
 const Navigation = () => {
-    const { currUser } = useContext(UserContext);
+    const { currUser, setCurrUser } = useContext(UserContext);
+
+    const signOutHandler = async () => {
+        await signOutUser();
+        setCurrUser(null);
+    };
 
     return (
         <Fragment>
@@ -17,9 +24,15 @@ const Navigation = () => {
                     <Link className={"nav-link"} to="/shop">
                         SHOP
                     </Link>
-                    <Link className={"nav-link"} to={"/auth"}>
-                        {currUser ? "SIGN OUT" : "SIGN IN"}
-                    </Link>
+                    {currUser ? (
+                        <span onClick={signOutHandler} className="nav-link">
+                            SIGN OUT
+                        </span>
+                    ) : (
+                        <Link className={"nav-link"} to={"/auth"}>
+                            {currUser ? "SIGN OUT" : "SIGN IN"}
+                        </Link>
+                    )}
                 </div>
             </div>
             <Outlet />
