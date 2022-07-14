@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import {
     createAuthUserWithEmailAndPassword,
     createUserDocumentFromAuth,
@@ -6,6 +6,7 @@ import {
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import "./sign-up-form.styles.scss";
+import { UserContext } from "../../contexts/user.context";
 
 const defaultFormFields = {
     displayName: "",
@@ -22,6 +23,9 @@ const SignUpForm = () => {
         const { name, value } = event.target;
         setFormFields({ ...formFields, [name]: value });
     };
+
+    const val = useContext(UserContext);
+    console.log("hit");
 
     const handleSubmit = async (event) => {
         event.preventDefault();
