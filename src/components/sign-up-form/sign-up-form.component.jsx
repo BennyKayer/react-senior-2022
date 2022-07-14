@@ -1,4 +1,8 @@
 import { useState } from "react";
+import {
+    createAuthUserWithEmailAndPassword,
+    createUserDocumentFromAuth,
+} from "../../utils/firebase/firebase.utils";
 
 const defaultFormFields = {
     displayName: "",
@@ -16,10 +20,39 @@ const SignUpForm = () => {
         setFormFields({ ...formFields, [name]: value });
     };
 
+    const handleSubmit = async (event) => {
+        event.preventDefault();
+
+        if (password !== confirmPassword) {
+            alert("passwords do not match");
+            return;
+        }
+
+        try {
+            const userCredential = await createAuthUserWithEmailAndPassword(
+                email,
+                password
+            );
+            const { user } = userCredential;
+            await createUserDocumentFromAuth(user, { displayName });
+            setFormFields(defaultFormFields);
+        } catch (err) {
+            if (err.code === "auth/email-already-in-use") {
+                alert("Cannot create user, email already in use");
+                return;
+            }
+            if (err.code === "auth/weak-password") {
+                alert("Password to weak! At least 6 chars");
+                return;
+            }
+            console.error(err);
+        }
+    };
+
     return (
         <div>
             <h1>Sign up with your email and password</h1>
-            <form onSubmit={() => {}}>
+            <form onSubmit={handleSubmit}>
                 <label htmlFor="displayName">Display Name</label>
                 <input
                     required

@@ -6,6 +6,7 @@ import {
     signInWithPopup,
     GoogleAuthProvider,
     signInWithRedirect,
+    createUserWithEmailAndPassword,
 } from "firebase/auth";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -37,11 +38,13 @@ export const signInWithGoogleRedirect = () =>
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (userAuth) => {
+export const createUserDocumentFromAuth = async (
+    userAuth,
+    additionalInformation
+) => {
     // This stuff will get the reference, even if we don't have a users collection
     // it will create a pointer bcs it's a unique space and I will hold it for future actions
     const userDocRef = doc(db, "users", userAuth.uid);
-    console.log(userDocRef);
 
     // This will transform the ref into snapshot
     // it is now possible to determine whether document actually exists
@@ -52,10 +55,22 @@ export const createUserDocumentFromAuth = async (userAuth) => {
         const createdAt = new Date();
 
         try {
-            await setDoc(userDocRef, { displayName, email, createdAt });
+            await setDoc(userDocRef, {
+                displayName,
+                email,
+                createdAt,
+                ...additionalInformation,
+            });
         } catch (error) {
             console.log("error creating the user", error.message);
         }
     }
     return userDocRef;
+};
+
+// Create auth user, not necessarily user document inside firebase
+export const createAuthUserWithEmailAndPassword = async (email, password) => {
+    if (!email || !password) return;
+
+    return await createUserWithEmailAndPassword(auth, email, password);
 };
