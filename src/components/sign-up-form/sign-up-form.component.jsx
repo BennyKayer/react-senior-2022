@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState } from "react";
 import {
     createAuthUserWithEmailAndPassword,
     createUserDocumentFromAuth,
@@ -6,7 +6,6 @@ import {
 import Button from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import "./sign-up-form.styles.scss";
-import { UserContext } from "../../contexts/user.context";
 
 const defaultFormFields = {
     displayName: "",
@@ -18,8 +17,6 @@ const defaultFormFields = {
 const SignUpForm = () => {
     const [formFields, setFormFields] = useState(defaultFormFields);
     const { displayName, email, password, confirmPassword } = formFields;
-
-    const { setCurrUser } = useContext(UserContext);
 
     const handleChange = (event) => {
         const { name, value } = event.target;
@@ -39,8 +36,8 @@ const SignUpForm = () => {
                 email,
                 password
             );
-            setCurrUser(user);
 
+            // TODO: Firebase listener problematic with display name
             await createUserDocumentFromAuth(user, { displayName });
             setFormFields(defaultFormFields);
         } catch (err) {

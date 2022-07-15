@@ -7,11 +7,10 @@ import { UserContext } from "../../contexts/user.context";
 import { signOutUser } from "../../utils/firebase/firebase.utils";
 
 const Navigation = () => {
-    const { currUser, setCurrUser } = useContext(UserContext);
+    const { currUser } = useContext(UserContext);
 
     const signOutHandler = async () => {
         await signOutUser();
-        setCurrUser(null);
     };
 
     return (
