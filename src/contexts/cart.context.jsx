@@ -24,6 +24,10 @@ export const CartProvider = ({ children }) => {
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [cartItems, setCartItems] = useState([]);
 
+    const cartItemsCount = cartItems.reduce((total, curr) => {
+        return total + curr.quantity;
+    }, 0);
+
     const addItemToCart = (productToAdd) => {
         setCartItems(addCartItem(cartItems, productToAdd));
     };
@@ -33,6 +37,7 @@ export const CartProvider = ({ children }) => {
         setIsCartOpen,
         cartItems,
         addItemToCart,
+        cartItemsCount,
     };
 
     return (
