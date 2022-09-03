@@ -7,8 +7,7 @@ import { useContext } from "react";
 import { CartContext } from "../../contexts/cart.context";
 
 const CartIcon = () => {
-    const { setIsCartOpen, isCartOpen, cartItemsCount } =
-        useContext(CartContext);
+    const { setIsCartOpen, isCartOpen, cartCount } = useContext(CartContext);
 
     const onClick = () => {
         setIsCartOpen(!isCartOpen);
@@ -17,7 +16,7 @@ const CartIcon = () => {
     return (
         <CartIconContainer onClick={onClick}>
             <ShoppingIcon />
-            <ItemCount>{cartItemsCount}</ItemCount>
+            <ItemCount>{cartCount}</ItemCount>
         </CartIconContainer>
     );
 };
