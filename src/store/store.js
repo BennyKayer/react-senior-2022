@@ -10,7 +10,7 @@ const persistConfig = {
     key: "root",
     storage,
     // Persisting this may cause some weird stuff
-    blacklist: ["user"],
+    whitelist: ["cart"],
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
