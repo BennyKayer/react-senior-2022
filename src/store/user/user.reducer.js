@@ -2,14 +2,19 @@ import { USER_ACTION_TYPES } from "./user.action-types";
 
 const INITIAL_STATE = {
     currentUser: null,
+    isLoading: false,
+    error: null,
 };
 
 export const userReducer = (state = INITIAL_STATE, action) => {
     const { type, payload } = action;
 
     switch (type) {
-        case USER_ACTION_TYPES.SET_CURRENT_USER:
+        case USER_ACTION_TYPES.SIGN_IN_SUCCESS:
             return { ...state, currentUser: payload };
+        case USER_ACTION_TYPES.SIGN_IN_FAILURE:
+            return { ...state, error: payload, isLoading: false };
+        // SEC: Explanation
         // Necessary to return same object not {...state} as f.e
         // actions from categories or cart will also trigger this reducer
         // returning same object will let redux know

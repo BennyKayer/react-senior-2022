@@ -5,12 +5,8 @@ import Shop from "./routes/shop/shop.component";
 import Authentication from "./routes/authentication/authentication.component";
 import Checkout from "./routes/checkout/checkout.component";
 import { useEffect } from "react";
-import {
-    onAuthStateChangedListener,
-    createUserDocumentFromAuth,
-} from "./utils/firebase/firebase.utils";
 import { useDispatch } from "react-redux";
-import { setCurrentUser } from "./store/user/user.action";
+import { checkUserSession } from "./store/user/user.action";
 
 const App = () => {
     const dispatch = useDispatch();
@@ -19,15 +15,7 @@ const App = () => {
     // call once and it will run callback on every authStateChange
     // whether signIn or signOut
     useEffect(() => {
-        const unsubscribe = onAuthStateChangedListener((user) => {
-            if (user) {
-                createUserDocumentFromAuth(user);
-            }
-            dispatch(setCurrentUser(user));
-        });
-
-        // Has to unsubscribe to prevent memory leak
-        return unsubscribe;
+        dispatch(checkUserSession());
     }, [dispatch]);
 
     return (
