@@ -12,8 +12,12 @@ export const userReducer = (state = INITIAL_STATE, action) => {
     switch (type) {
         case USER_ACTION_TYPES.SIGN_IN_SUCCESS:
             return { ...state, currentUser: payload };
+        case USER_ACTION_TYPES.SIGN_UP_FAILED:
+        case USER_ACTION_TYPES.SIGN_OUT_FAILURE:
         case USER_ACTION_TYPES.SIGN_IN_FAILURE:
             return { ...state, error: payload, isLoading: false };
+        case USER_ACTION_TYPES.SIGN_OUT_SUCCESS:
+            return { ...state, currentUser: null };
         // SEC: Explanation
         // Necessary to return same object not {...state} as f.e
         // actions from categories or cart will also trigger this reducer
