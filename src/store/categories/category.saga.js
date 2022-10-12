@@ -6,7 +6,7 @@ import {
     fetchCategoriesFailed,
 } from "./category.action";
 
-import { CATEGORIES_ACTION_TYPES } from "./category.action-types";
+import { CATEGORIES_ACTION_TYPES } from "./category.types";
 
 function* fetchCategoriesAsync() {
     try {
