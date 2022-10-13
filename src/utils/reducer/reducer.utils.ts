@@ -1,5 +1,11 @@
 import { AnyAction } from "redux";
 
+// AC stands for action creator - these functions from .action folder
+type Matchable<AC extends () => AnyAction> = AC & {
+    type: ReturnType<AC>["type"];
+    match: (action: AnyAction) => action is ReturnType<AC>;
+};
+
 // Why 2 not 1 with optional payload?
 // change of thinking, no point of referencing something that shouldn't be there
 // just creates a hassle with undefined check, which we don't want
