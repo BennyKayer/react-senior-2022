@@ -3,7 +3,7 @@ import {
     fetchCategoriesStart,
     fetchCategoriesSuccess,
     fetchCategoriesFailed,
-} from "./category.action";
+} from "./category.actions";
 import { AnyAction } from "redux";
 
 export type CategoriesState = {
