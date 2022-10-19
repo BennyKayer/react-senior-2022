@@ -1,7 +1,7 @@
 import { AnyAction } from "redux";
 
 // AC stands for action creator - these functions from .action folder
-type Matchable<AC extends () => AnyAction> = AC & {
+export type Matchable<AC extends () => AnyAction> = AC & {
     type: ReturnType<AC>["type"];
     match: (action: AnyAction) => action is ReturnType<AC>;
 };
