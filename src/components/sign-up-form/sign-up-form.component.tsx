@@ -1,9 +1,11 @@
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Button, { BUTTON_TYPE_CLASSES } from "../button/button.component";
 import FormInput from "../form-input/form-input.component";
 import "./sign-up-form.styles.scss";
 import { useDispatch } from "react-redux";
 import { signUpStart } from "../../store/user/user.action";
+import { FormEvent } from "react";
+import { AuthError, AuthErrorCodes } from "firebase/auth";
 
 const defaultFormFields = {
     displayName: "",
@@ -17,12 +19,12 @@ const SignUpForm = () => {
     const { displayName, email, password, confirmPassword } = formFields;
     const dispatch = useDispatch();
 
-    const handleChange = (event) => {
+    const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         setFormFields({ ...formFields, [name]: value });
     };
 
-    const handleSubmit = async (event) => {
+    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
 
         if (password !== confirmPassword) {
@@ -34,11 +36,11 @@ const SignUpForm = () => {
             dispatch(signUpStart(email, password, displayName));
             setFormFields(defaultFormFields);
         } catch (err) {
-            if (err.code === "auth/email-already-in-use") {
+            if ((err as AuthError).code === AuthErrorCodes.EMAIL_EXISTS) {
                 alert("Cannot create user, email already in use");
                 return;
             }
-            if (err.code === "auth/weak-password") {
+            if ((err as AuthError).code === AuthErrorCodes.WEAK_PASSWORD) {
                 alert("Password to weak! At least 6 chars");
                 return;
             }
